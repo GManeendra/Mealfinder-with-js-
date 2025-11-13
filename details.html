@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Details</title>
+
+  <style>
+    .box{display:flex;gap:40px;padding:40px;}
+    img{width:350px;border-radius:10px;}
+    .info{max-width:600px;}
+  </style>
+</head>
+
+<body>
+
+  <h1>Meal Detail</h1>
+  <div id="detail" class="box"></div>
+
+<script>
+  let id = localStorage.getItem("mealID");
+
+  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+  .then(res=>res.json())
+  .then(data=>{
+    let m = data.meals[0];
+    document.getElementById("detail").innerHTML = `
+      <img src="${m.strMealThumb}">
+      <div class="info">
+        <h2>${m.strMeal}</h2>
+        <p><b>Category:</b> ${m.strCategory}</p>
+        <p><b>Area:</b> ${m.strArea}</p>
+        <h3>Instructions</h3>
+        <p>${m.strInstructions}</p>
+      </div>
+    `
+  })
+</script>
+
+</body>
+</html>

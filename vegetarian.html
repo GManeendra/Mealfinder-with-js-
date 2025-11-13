@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vegetarian Meals</title>
+
+  <link rel="stylesheet" href="./starter.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="containerbox">
+      <div class="logo">
+        <i class="fa-solid fa-house"></i>
+        <a href="../index.html">MEALFINDER</a>
+      </div>
+
+      <div id="menu-icon">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Banner -->
+  <header class="header">
+    <div class="hero-text">
+      <h1>Vegetarian Meals</h1>
+      <p>Healthy & nutrious plant-based cuisines</p>
+    </div>
+  </header>
+
+  <!-- Description -->
+  <div id="desc-box">
+    <p id="vegetarian-desc"></p>
+  </div>
+
+  <h2 class="meal-title">MEALS</h2>
+
+  <div id="mealContainer" class="grid"></div>
+
+  <script>
+    const menuIcon = document.getElementById("menu-icon");
+    const menuList = document.getElementById("menuList");
+
+    // ✅ FETCH MEALS CARDS
+    fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Vegetarian")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("mealContainer");
+
+        data.meals.forEach(meal => {
+          const card = document.createElement("div");
+          card.classList.add("meal-card");
+          card.innerHTML = `
+            <img src="${meal.strMealThumb}" />
+            <h3>${meal.strMeal}</h3>
+          `;
+
+          // ✅ WORKING REDIRECTION
+          card.addEventListener("click", () => {
+            window.location.href = `details.html?id=${meal.idMeal}`;
+          });
+
+          container.appendChild(card);
+        });
+      });
+
+    // ✅ FETCH CATEGORY DESCRIPTION
+    fetch("https://www.themealdb.com/api/json/v1/1/categories.php")
+      .then(res => res.json())
+      .then(data => {
+        const category = data.categories.find(cat => cat.strCategory === "Vegetarian");
+        document.getElementById("vegetarian-desc").innerText =
+          category.strCategoryDescription;
+      });
+  </script>
+
+</body>
+
+</html>
